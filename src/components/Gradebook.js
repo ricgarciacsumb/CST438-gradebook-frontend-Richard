@@ -60,7 +60,7 @@ class Gradebook extends React.Component {
   
     // when submit button pressed, send updated grades to back end 
     //  and then fetch the new grades.
-    handleSubmit = ( ) => {
+    addAssignment = (assignment) => {
       console.log("Gradebook.handleSubmit");
       const token = Cookies.get('XSRF-TOKEN');
       

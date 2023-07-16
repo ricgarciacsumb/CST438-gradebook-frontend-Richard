@@ -7,13 +7,8 @@ import Button from '@mui/material/Button';
 import Radio from '@mui/material/Radio';
 import {DataGrid} from '@mui/x-data-grid';
 import {SERVER_URL} from '../constants.js'
-// import AddAssignment from './AddAssignment.js'
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
+import AddAssignment from './AddAssignment.js'
 
-import TextField from '@mui/material/TextField';
 
 // NOTE:  for OAuth security, http request must have
 //   credentials: 'include' 
@@ -22,38 +17,13 @@ import TextField from '@mui/material/TextField';
 class Assignment extends React.Component {
     constructor(props) {
       super(props);
-      this.state = { open:false, selected: 0, assignments: [], assignmentName: '', dueDate: '', courseId: '', needsGrading: 1, };
+      this.state = { selected: 0, assignments: [], assignmentName: '', dueDate: '', courseId: '', needsGrading: 1, };
     };
  
    componentDidMount() {
     this.fetchAssignments();
   }
-  handleClickOpen = () => {
-      this.setState( {open:true, attempt:'', alias:this.props.alias} );
-    };
-
-
-    handleClose = () => {
-      this.setState( {open:false} );
-      // this.props.fetch();
-    };
-
-
-    handleChange = (event) =>  {
-        this.setState({[event.target.name]: event.target.value});
-     }
-     
-
-  // Save course and close modal form (fetch method)
-    handleAdd = () => {
-        console.log("button works");
-        
-        // this.setState({ [event.target.name]: event.target.value })
-        // this.props.add(this.state.assignmentName,this.state.dueDate, this.state.courseId);
-        this.handleClose();
-        console.log("button underclose");
-        this.addAssign();
-    }
+ 
   fetchAssignments = () => {
     console.log("Assignment.fetchAssignments");
     const token = Cookies.get('XSRF-TOKEN');
@@ -80,17 +50,16 @@ class Assignment extends React.Component {
     console.log("Assignment.onRadioClick " + event.target.value);
     this.setState({selected: event.target.value});
   }
-   addAssign() {
-    
+
+  addAssign = (assignment) => {
+    // event.preventDefault();
     console.log("you see");
     const token = Cookies.get('XSRF-TOKEN');
-    fetch(`${SERVER_URL}/assignment`,
+    fetch('${SERVER_URL}/assignment',
       {
         method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-XSRF-TOKEN': token
-        },
+        headers: {
+          'Content-Type': 'application/json', 'X-XSRF-TOKEN': token },
         body: JSON.stringify({
           assignmentName: this.state.assignmentName,
           dueDate: this.state.dueDate,
@@ -141,37 +110,9 @@ class Assignment extends React.Component {
                     variant="outlined" color="primary" disabled={this.state.assignments.length===0}  style={{margin: 10}}>
               Grade
             </Button>
-                 
+            <AddAssignment add />        
             <ToastContainer autoClose={1500} /> 
-            
-             <div>
-            <Button variant="outlined" color="primary" style={{margin: 10}} onClick={this.handleClickOpen}>
-              Add Assignment
-            </Button>
-            <Dialog open={this.state.open} onClose={this.handleClose}>
-                <DialogTitle>Add Assignment</DialogTitle>
-                <DialogContent  style={{paddingTop: 20}} >
-                    <TextField autoFocus fullWidth label= "Assignment name" name="assignmentName" 
-                    onChange={this.handleChange} /> 
-                    <TextField autoFocus fullWidth label= "Assignment DueDate" name="dueDate" 
-                    onChange={this.handleChange} /> 
-                    <TextField autoFocus fullWidth label= "Course id" name="courseId" 
-                    onChange={this.handleChange} /> 
-                    {/* <TextField style = {{width: 200}} label="alias" name="alias" 
-                        onChange={this.handleChange} value={alias} /> 
-                     */}
-                </DialogContent>
-                <DialogActions>
-           
-                  <Button color="secondary" onClick={this.handleClose}>Cancel</Button>
-                  <Button color="primary" onClick={this.handleAdd}>Add</Button>
-                </DialogActions>
-            </Dialog>      
           </div>
-      
-          </div>
-          
-          
       )
   }
 }  
