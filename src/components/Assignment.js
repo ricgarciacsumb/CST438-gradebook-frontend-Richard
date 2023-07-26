@@ -145,7 +145,7 @@ class Assignment extends React.Component {
             <ToastContainer autoClose={1500} /> 
             
              <div>
-            <Button variant="outlined" color="primary" style={{margin: 10}} onClick={this.handleClickOpen}>
+            <Button id = "b1" variant="outlined" color="primary" style={{margin: 10}} onClick={this.handleClickOpen}>
               Add Assignment
             </Button>
             <Dialog open={this.state.open} onClose={this.handleClose}>
@@ -164,7 +164,7 @@ class Assignment extends React.Component {
                 <DialogActions>
            
                   <Button color="secondary" onClick={this.handleClose}>Cancel</Button>
-                  <Button color="primary" onClick={this.handleAdd}>Add</Button>
+                  <Button id = "handleAdd" color="primary" onClick={this.handleAdd}>Add</Button>
                 </DialogActions>
             </Dialog>      
           </div>
